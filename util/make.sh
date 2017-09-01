@@ -24,7 +24,7 @@ SRCDIR=$1
 # Copy data/code from the source directory to the work directory.
 echo -n Copying make files...
 cp $SRCDIR/make.txt $WORKDIR/make.txt 2>/dev/null
-echo -ne "\n" >> $WORKDIR/make.txt
+echo "\n" >> $WORKDIR/make.txt
 echo [done]
 
 if [ -d $SRCDIR/data ]; then
@@ -34,7 +34,7 @@ if [ -d $SRCDIR/data ]; then
 	echo [done]
 fi
 
-echo -n Copying PRG files... 
+echo -n Copying PRG files...
 mkdir $WORKDIR/PRG
 cp $SRCDIR/PRG/* $WORKDIR/PRG/ 2>/dev/null
 echo [done]
@@ -44,6 +44,10 @@ echo -n Copying code files...
 mkdir $WORKDIR/code
 cp -R $SRCDIR/code/* $WORKDIR/code/ 2>/dev/null
 echo [done]
+
+# run randomizer script
+echo -n "Randomizing item locations"
+./util/randomizer.py $WORKDIR/code/Areas
 
 # Create make.asm file to combine all assembled PRGs into the final ROM.
 rm -f $WORKDIR/make.asm 2>/dev/null
