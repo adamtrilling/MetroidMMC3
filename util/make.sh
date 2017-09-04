@@ -47,7 +47,7 @@ echo [done]
 
 # run randomizer script
 echo -n "Randomizing item locations"
-./util/randomizer.py $WORKDIR/code/Areas
+./util/randomizer.py $WORKDIR/code
 
 # Create make.asm file to combine all assembled PRGs into the final ROM.
 rm -f $WORKDIR/make.asm 2>/dev/null

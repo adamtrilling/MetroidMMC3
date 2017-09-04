@@ -35,13 +35,11 @@ for filename, lines in ITEM_LOCATIONS.iteritems():
 
     for line in lines:
         item = ITEMS.pop()
-        print "putting item " + item + " in " + filename + ":" + line
+        print "putting item {0} in {1}:{2}".format(item, filename, line)
 
 # LA239:  .byte $14, $FF, $02, $09, $6D, $00
-        exp = r"({0}:\ \ \.byte\ \$\w\w,\ \$\w\w,\ \$\w\w, )\$\w\w".format(line)
-        print "exp = " + exp
+        exp = r"({0}:\s+\.byte\ \$\w\w,\ \$\w\w,\ \$\w\w, )\$\w\w".format(line)
         regex = re.compile(exp, re.MULTILINE)
-        print regex.search(filedata).group(0)
         filedata = regex.sub(r"\1{0}".format(item), filedata)
 
     with open(full_path, 'w') as file:
