@@ -1,0 +1,27 @@
+<!doctype html>
+<div>
+  <h1>Metroid Randomizer</h1>
+  <p>Fill in a Seed to download a randomized version of Metroid that should be playable in an emulator.</p>
+
+  <form action="/randomize" method="GET">
+    <div style="width: 400px;">
+      <input type="submit" value="Generate" style="float: right" />
+      <div style="overflow: hidden; padding-right: .5em;">
+         <input type="text" name="seed" value="{{default_seed}}" style="width: 100%;" />
+      </div>
+    </div>
+  </form>
+
+  <h2>Guarantees</h2>
+  <ul>
+      <li>The same seed will generate the same output, so that the Randomizer can be used for races</li>
+      <li>The Morph Ball is in its normal location because you can't go a lot of places without it</li>
+  </ul>
+  <h2>Caveats</h2>
+  <ul>
+      <li>I think every game is winnable, but I can't prove it. If you have the Morph Ball, Missiles, and do the right screen wraps,
+          you should be able to get to any location on the map. You can get Missiles with just the Morph Ball by defeating Kraid.</li>
+      <li>This is not anywhere close to my usual standards of code quality. If it turns out to work and be enjoyable for people,
+          I'll put a lot more time into it. But expect bugs.</li>
+  </ul>
+</div>
