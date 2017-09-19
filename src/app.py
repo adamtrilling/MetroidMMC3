@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, make_response, render_template, request
 from generator import generate
 from random import randint
 from re import match
@@ -35,18 +35,17 @@ def randomize():
     if (match(r'^[0-9a-f]+$', seed) is None):
         return ("Bad Request", 400, [])
 
-    if (os.path.isfile("work/metroid-{0}.nes".format(seed)) is not True):
-        generate(seed)
-
-    cur.execute("SELECT count(*) FROM seeds WHERE seed = %s", (seed,))
+    cur.execute("SELECT bin FROM seeds WHERE seed = %s", (seed,))
     row = cur.fetchone()
-    if (row[0] == 0L):
-        with open("work/metroid-{0}.nes".format(seed), 'rb') as f:
-            cur.execute("""INSERT INTO
-                           seeds(seed, downloads, created_at, last_download, bin)
-                           VALUES(%s, 1, now(), now(), %s)""",
-                        (seed, psycopg2.Binary(f.read())))
+    if (row is None):
+        generate(seed)
+        file = open("work/metroid-{0}.nes".format(seed), 'rb').read()
+        cur.execute("""INSERT INTO
+                       seeds(seed, downloads, created_at, last_download, bin)
+                       VALUES(%s, 1, now(), now(), %s)""",
+                    (seed, psycopg2.Binary(file)))
     else:
+        file = row[0]
         cur.execute("""UPDATE seeds
                        SET downloads = downloads + 1,
                            last_download = now()
@@ -54,9 +53,10 @@ def randomize():
 
     conn.commit()
 
-    return send_file("../work/metroid-{0}.nes".format(seed),
-                     'vnd.nintendo.nes.rom', True,
-                     "metroid-{0}.nes".format(seed))
+    response = make_response(str(file))
+    response.headers['Content-Disposition'] = "attachment; filename=metroid-{0}.nes".format(seed)
+    response.headers['Content-Type'] = 'vnd.nintendo.nes.rom'
+    return response
 
 
 if __name__ == '__main__':
