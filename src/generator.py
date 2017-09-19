@@ -44,8 +44,9 @@ def generate(seed):
     Ophis.Main.run_ophis(["-o", "work/5-{0}.bin".format(seed), "work/5-{0}.asm".format(seed)])
 
     # generate and execute makefile
+    output_file = "work/metroid-{0}.nes".format(seed)
     makefile = open("work/make-{0}.asm".format(seed), 'w')
-    makefile.write(".outfile \"work/metroid-{0}.nes\"\n".format(seed))
+    makefile.write(".outfile \"{0}\"\n".format(output_file))
     makefile.write(".include \"../src/asm/code/header.asm\"\n")
     makefile.write(".incbin \"0.bin\"\n")
     makefile.write(".incbin \"1-{0}.bin\"\n".format(seed))
@@ -59,7 +60,7 @@ def generate(seed):
 
     Ophis.Main.run_ophis(["work/make-{0}.asm".format(seed)])
 
-    return True
+    return output_file
 
 
 # randomizer constants

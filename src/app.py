@@ -38,8 +38,8 @@ def randomize():
     cur.execute("SELECT bin FROM seeds WHERE seed = %s", (seed,))
     row = cur.fetchone()
     if (row is None):
-        generate(seed)
-        file = open("work/metroid-{0}.nes".format(seed), 'rb').read()
+        filename = generate(seed)
+        file = open(filename, 'rb').read()
         cur.execute("""INSERT INTO
                        seeds(seed, downloads, created_at, last_download, bin)
                        VALUES(%s, 1, now(), now(), %s)""",
